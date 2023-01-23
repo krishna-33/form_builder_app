@@ -1,0 +1,33 @@
+import axios from "axios";
+import { useSnackbar } from 'notistack';
+//apply base url for axios
+const REACT_APP_APP_URL = import.meta.env.VITE_BE_URL;
+const axiosApi = axios.create({
+  baseURL: REACT_APP_APP_URL,
+});
+
+axios.interceptors.request.use(function (config) {
+  return config;
+});
+
+axiosApi.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(error)
+);
+
+export async function get(url, config) {
+  return await axiosApi
+    .get(url, {
+      ...config,
+    })
+    .then((response) => response.data);
+}
+
+export async function post(url, config) {
+    return await axiosApi
+      .post(url, {
+        ...config,
+      })
+      .then((response) => response.data)
+      //.catch((error) => enqueueSnackbar(error, { variant: 'error' }));
+  }
